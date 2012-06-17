@@ -1,0 +1,65 @@
+" This is a pretty simple color scheme for dark backgrounds.  It requires a
+" 256 color terminal because it uses very dark grays, but this isn't a
+" problem for most modern terminals.
+"
+" Right now I just use this file in a color terminal, so it only works in
+" that environment.  In the future, I hope to add support for GUIs and
+" more primitive terminals.
+"
+" If you want to modify this file, search help for 'mysyntaxfile-replace' to
+" get all the information you'll need.  To get a list of all the colors
+" available, go to:
+"
+"     file:///~/ref/vim/256-color-chart.html    (On my laptop.)
+"                          -or-
+"     http://www.calmar.ws/vim/256-xterm-24bit-rgb-color-chart.html
+"
+" -Kale Kundert
+
+" Bureaucratic stuff
+highlight clear
+if exists("syntax_on")
+    syntax reset
+endif
+
+set t_Co=256    " Tells vim that the terminal can support 256 colors.
+set background=dark
+
+let g:colors_name = "dark"
+
+" Defining the basic highlighting groups
+highlight Normal                                                ctermfg=White       guifg=White             ctermbg=Black   guibg=Black
+highlight Error                                                 ctermfg=White       guifg=White             ctermbg=Red     guibg=Red
+
+highlight Comment                                               ctermfg=LightGray   guifg=LightGray
+highlight Todo              term=bold cterm=bold gui=bold       ctermfg=LightGray   guifg=LightGray
+
+highlight Constant          term=bold cterm=bold gui=bold       ctermfg=White       guifg=White
+highlight String                                                ctermfg=Green       guifg=Green
+highlight Number            term=bold cterm=bold gui=bold       ctermfg=White       guifg=White
+
+highlight Statement         term=bold cterm=bold gui=bold       ctermfg=Blue        guifg=Blue
+highlight Identifier        term=bold cterm=bold gui=bold       ctermfg=Yellow      guifg=Yellow
+highlight Function          term=bold cterm=bold gui=bold       ctermfg=White       guifg=White
+highlight Type              term=bold cterm=bold gui=bold       ctermfg=Cyan        guifg=Cyan
+
+highlight PreProc           term=bold cterm=bold gui=bold       ctermfg=Blue        guifg=Blue
+
+highlight Special           term=bold cterm=bold gui=bold       ctermfg=Green       guifg=Green
+highlight SpecialComment    term=bold cterm=bold gui=bold       ctermfg=LightGray   guifg=LightGray
+
+" Linked the less common groups to the basic ones
+runtime shared.vim
+
+highlight LineNr                                                ctermfg=White       guifg=White             ctermbg=233     
+highlight MatchParen                                                                                        ctermbg=Blue
+
+highlight Visual                                                                                            ctermbg=233
+
+highlight Folded                                                ctermfg=White       guifg=White             ctermbg=233
+highlight FoldColumn                                            ctermfg=White       guifg=White             ctermbg=233
+
+highlight SpellBad                                                                                          ctermbg=233
+highlight SpellCap                                                                                          ctermbg=233
+highlight SpellRare                                                                                         ctermbg=233
+highlight SpellLocal                                                                                        ctermbg=233

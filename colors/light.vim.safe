@@ -1,0 +1,52 @@
+" This is a syntax highlighting scheme based on the simple IDLE text editor
+" that ships with python.  The editor sucked, but the colors were nice and
+" that's why this file exists.  
+"
+" If you want to modify this file, search help for 'mysyntaxfile-replace' to
+" get all the information you'll need.
+"
+"  -Kale Kundert
+
+" Bureaucratic stuff
+hi clear
+if exists("syntax_on")
+  syntax reset
+endif
+
+set background=light
+let g:colors_name="light"
+
+" Defining the basic highlighting groups
+highlight Normal            guifg=#000000 ctermfg=0   guibg=#ffffff ctermbg=15
+highlight Error	            guifg=#000000 ctermfg=0   guibg=#ff7777
+
+highlight Comment           guifg=#dd0000 ctermfg=1
+highlight Todo	            guifg=#dd0000 ctermfg=1   guibg=#ffff00 ctermbg=11
+
+highlight Constant          guifg=#900090 ctermfg=5
+highlight String            guifg=#00aa00 ctermfg=2
+highlight Number            guifg=#000000 ctermfg=0
+
+highlight Statement         guifg=#ff7700 ctermfg=3   gui=none cterm=none term=bold
+highlight Identifier	    guifg=#000000 ctermfg=0
+highlight Function          guifg=#0000ff ctermfg=4
+highlight Type              guifg=#000000 ctermfg=0   gui=bold cterm=bold 
+
+highlight PreProc           guifg=#900090 ctermfg=4
+
+highlight Special           guifg=#00aa00 ctermfg=2   gui=bold cterm=bold
+highlight SpecialComment    guifg=#dd0000 ctermfg=DarkRed   gui=bold cterm=bold
+
+" Linking less common groups to the basic ones
+runtime shared.vim
+
+highlight LineNr            guifg=#000000 ctermfg=Black       guibg=#dfdfdf ctermbg=7
+highlight MatchParen	    guifg=#000000 ctermfg=Black       guibg=#bebebe ctermbg=7
+
+highlight Folded            guifg=#000000 ctermfg=Black         guibg=#dfdfdf ctermbg=LightGray
+highlight FoldColumn        guifg=#000000 ctermfg=Black         guibg=#dfdfdf ctermbg=LightGray
+
+highlight SpellBad          gui=undercurl     guisp=#bebebe     ctermbg=LightGray
+highlight SpellCap          gui=undercurl     guisp=#bebebe     ctermbg=LightGray
+highlight SpellRare         gui=undercurl     guisp=#bebebe     ctermbg=LightGray
+highlight SpellLocal        gui=undercurl     guisp=#bebebe     ctermbg=LightGray
