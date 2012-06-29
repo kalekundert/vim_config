@@ -29,6 +29,7 @@ set nobackup
 set cpoptions+=I
 set backspace=indent,eol,start
 set wildignore=*.swp,*.pyc,*.class
+set shortmess+=I
 
 set formatoptions=tcrq
 set guioptions=ic
