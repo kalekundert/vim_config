@@ -92,7 +92,9 @@ map K <Nop>
 
 " This makes :W and :Wq work just like :w and :wq.  
 command W w
+command Q q
 command Wq wq
+command WQ wq
 
 " This causes the '?' key to behave like the '/' key, except the regular
 " expression used to search for whole words is entered automatically.
