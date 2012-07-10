@@ -26,8 +26,8 @@ let g:colors_name = "dark"
 highlight Normal            guifg=White      ctermfg=White      ctermbg=Black      guibg=Black
 highlight Error             guifg=White      ctermfg=White      ctermbg=Red        guibg=Red
 
-highlight Comment           guifg=DarkGray   ctermfg=LightGray  gui=italic     cterm=none 
-highlight Todo              guifg=LightGray  ctermfg=LightGray  gui=none       cterm=none 
+highlight Comment           guifg=DarkGray   ctermfg=Yellow     gui=italic     cterm=none 
+highlight Todo              guifg=LightGray  ctermfg=Yellow     gui=none       cterm=none 
 
 highlight Constant          guifg=White      ctermfg=White      gui=none       cterm=none 
 highlight String            guifg=Green      ctermfg=Green       

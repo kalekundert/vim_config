@@ -34,6 +34,7 @@ set shortmess+=I
 set formatoptions=tcrq
 set guioptions=ic
 set guifont=Monospace\ 10
+set laststatus=2
 
 set mouse=""
 set mousehide
