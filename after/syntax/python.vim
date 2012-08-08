@@ -9,15 +9,15 @@ syntax match pythonSpecialString "%[^'" ]" contained
 syntax match pythonSpecialString "\\." contained
 
 " Include the quotes in the region matched by pythonString.
-syntax region pythonString start='u\=r\="' skip='\\"' end='"'
+syntax region pythonString start='u\=r\="' skip='\\"' end='"' oneline
             \ contains=pythonEscape,pythonSpecialString,@Spell
 
 " Only do spell checking in double-quoted strings.
-syntax region pythonString start="u\=r\='" skip="\\'" end="'" 
+syntax region pythonString start="u\=r\='" skip="\\'" end="'" oneline
             \ contains=pythonEscape,pythonSpecialString,@NoSpell
 
 " Recognize some restructured text inside comments.
-syntax region pythonVerbatim start="`" end="'"
+syntax region pythonVerbatim start="`" end="'" oneline
             \ keepend contained contains=@NoSpell
 
 " Match docstrings as comments, rather than strings.
@@ -35,6 +35,9 @@ syntax match pythonMagicComment "^# encoding: latin-1$" contains=@NoSpell
 syntax clear pythonDecorator
 syntax match pythonDecorator "@\h[a-zA-Z1-9_.]*"
 
+" Don't hightlight the exception base class.
+syntax keyword pythonExceptionBaseClass Exception
+
 " Change how some groups are colored
 highlight link pythonInclude Statement
 highlight link pythonPreCondit Statement
@@ -48,3 +51,5 @@ highlight link pythonMagicComment SpecialComment
 
 highlight link pythonEscape String
 highlight link pythonSpecialString String
+highlight link pythonExceptionBaseClass Normal
+
