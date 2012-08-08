@@ -4,6 +4,7 @@ endif
 
 augroup filetypedetect
     autocmd BufRead,BufNewFile *.sh     setfiletype zsh
+    autocmd BufRead,BufNewFile *.pym    setfiletype python
 
     autocmd BufRead,BufNewFile directory.txt,*.notes    setfiletype directory
 
