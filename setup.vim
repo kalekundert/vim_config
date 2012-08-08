@@ -141,7 +141,7 @@ endif
 " Try to color folds based on their level, but don't complain if the source
 " patch isn't installed.
 
-try | setlocal foldhighlight=MyFoldHi(v:foldlevel) | catch | | endtry
+silent! setlocal foldhighlight=MyFoldHi(v:foldlevel)
 
 syntax enable
 
