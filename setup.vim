@@ -77,19 +77,23 @@ let &printexpr="(v:cmdarg=='' ? ".
     \" : system('mv '.v:fname_in.' '.v:cmdarg) + v:shell_error)"
 
 map Y y$
-map Q gq
+map q ge
+map Q gE
 
 map '' 'mzz
 map == 1z=
+
+" This may be an easier way to enter normal mode.  Note that Ctrl-C is another
+" way to switch from insert mode to normal mode.
+"inoremap C-j <esc>
+"inoremap <esc> <nop>
 
 " Maps the F1 key to Esc, since I tend to hit F1 when I'm trying to enter
 " normal mode.
 map <F1> <Esc>
 map! <F1> <Esc>
 
-" The default command opens up a help window.  This is really distracting, and
-" I tend to hit 'K' by accident somewhat often.
-map K <Nop>
+map K gq
 
 " This makes :W and :Wq work just like :w and :wq.  
 command W w
@@ -99,7 +103,7 @@ command WQ wq
 
 " This causes the '?' key to behave like the '/' key, except the regular
 " expression used to search for whole words is entered automatically.
-nmap ? /\<\><Left><Left>
+"nmap ? /\<\><Left><Left>
 
 retab
 filetype plugin indent on
@@ -108,6 +112,9 @@ let java_allow_cpp_keywords = 1
 let python_highlight_exceptions = 1
 let python_highlight_space_errors = 1
 let python_no_builtin_highlight = 1
+let fortran_dialect = "f77"
+let fortran_have_tabs = 1
+let fortran_fixed_source = 1
 
 abbreviate slef self
 abbreviate {{{! {{{1
@@ -117,8 +124,25 @@ abbreviate }}}@ }}}2
 
 if has("gui_running")
     colorscheme light
+
+    function! MyFoldHi(level)
+            return hlID("Folded".a:level)
+    endfunction 
+
 else
     colorscheme dark
+
+    function! MyFoldHi(level)
+            return hlID("Folded")
+    endfunction 
+
 endif
+
+" Try to color folds based on their level, but don't complain if the source
+" patch isn't installed.
+
+try | setlocal foldhighlight=MyFoldHi(v:foldlevel) | catch | | endtry
+
+syntax enable
 
 " vim: nofoldenable

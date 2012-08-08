@@ -50,8 +50,11 @@ if &background == "light"
     highlight NonText           guifg=Black                       gui=bold
 
     highlight Visual                             guibg=LightGray  
-    highlight Folded            guifg=Black      guibg=LightBlue 
     highlight MatchParen                         guibg=Gray 
+    highlight Folded            guifg=Black      guibg=LightBlue 
+    highlight Folded1           guifg=Black      guibg=LightBlue 
+    highlight Folded2           guifg=Black      guibg=LightGreen 
+    highlight Folded3           guifg=Black      guibg=LightGoldenrod
 
 " Likewise, choose light colors when the background is dark.
 else
@@ -90,8 +93,10 @@ else
     highlight NonText           guifg=White                         gui=bold
 
     highlight Visual                                                guibg=DarkGray
-    highlight Folded            guifg=Black      ctermfg=Black      guibg=DarkGray   ctermbg=DarkBlue
     highlight MatchParen                                            guibg=Gray 
+    highlight Folded            guifg=Black      ctermfg=Black      guibg=DarkGray   ctermbg=DarkBlue
+    highlight Folded1           guifg=Black      ctermfg=Black      guibg=DarkGray   ctermbg=DarkBlue
+    highlight Folded2           guifg=Black      ctermfg=Black      guibg=DarkGray   ctermbg=DarkBlue
 endif
 
 " Link the less common groups to the basic ones.
