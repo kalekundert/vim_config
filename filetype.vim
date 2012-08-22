@@ -9,6 +9,7 @@ augroup filetypedetect
     autocmd BufRead,BufNewFile directory.txt,*.notes    setfiletype directory
 
     autocmd BufRead,BufNewFile *.txt    setfiletype text
+    autocmd BufRead,BufNewFile *.rst    setfiletype rest
     autocmd BufRead,BufNewFile *.tex    setfiletype tex
 
     autocmd BufRead,BufNewFile *.mdp    setfiletype mdp
