@@ -1,4 +1,4 @@
-" Highlight some special values
+" Highlight some special values.
 syntax keyword pythonConstant True False None
 
 " Clear out the default string patterns.
@@ -18,22 +18,29 @@ syntax region pythonString start="u\=r\='" skip="\\'" end="'" oneline
 
 " Recognize some restructured text inside comments.
 syntax region pythonVerbatim start="`" end="'" oneline
-            \ keepend contained contains=@NoSpell
+            \ transparent keepend contained contains=@NoSpell
+
+" Try to avoid spellchecking acronyms.
+syntax match pythonAcronym "[A-Z0-9]\{2,}"
+            \ transparent contained contains=@NoSpell
 
 " Match docstrings as comments, rather than strings.
-syntax match pythonComment " *#.*" contains=pythonVerbatim,@Spell
-syntax region pythonComment start='"""{' end='}"""' keepend
+syntax match pythonComment " *#.*" 
+            \ contains=pythonVerbatim,pythonAcronym,@Spell
+syntax region pythonComment start='"""{' end='}"""'
+            \ keepend contains=@NoSpell
 syntax region pythonComment start='""" ' end='"""$'
-            \ keepend contains=pythonVerbatim, @Spell
+            \ keepend contains=pythonVerbatim,pythonAcronym,@Spell
 
-" Recognize magic comments that I tend to put in files.
+" Recognize the magic comments that I tend to put in files.
 syntax match pythonMagicComment "^#!/usr/bin/env python$" contains=@NoSpell
 syntax match pythonMagicComment "^# vim: .*$" contains=@NoSpell
 syntax match pythonMagicComment "^# encoding: latin-1$" contains=@NoSpell
+syntax match pythonMagicComment "^# encoding: utf-8$" contains=@NoSpell
 
-" Include both the '@' sign and the function name in the decorator pattern.
+" Highlight both the '@' sign and the function name for decorators.
 syntax clear pythonDecorator
-syntax match pythonDecorator "@\h[a-zA-Z1-9_.]*"
+syntax match pythonDecorator " *@\h[a-zA-Z1-9_.]*"
 
 " Don't hightlight the exception base class.
 syntax keyword pythonExceptionBaseClass Exception
@@ -41,13 +48,11 @@ syntax keyword pythonExceptionBaseClass Exception
 " Change how some groups are colored
 highlight link pythonInclude Statement
 highlight link pythonPreCondit Statement
+highlight link pythonMagicComment SpecialComment
 
 highlight link pythonConstant Constant 
 highlight link pythonExceptions Constant
 highlight link pythonDecorator PreProc
-
-highlight link pythonVerbatim Comment
-highlight link pythonMagicComment SpecialComment
 
 highlight link pythonEscape String
 highlight link pythonSpecialString String
