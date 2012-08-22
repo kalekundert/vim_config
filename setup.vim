@@ -79,6 +79,9 @@ let &printexpr="(v:cmdarg=='' ? ".
 map Y y$
 map q ge
 map Q gE
+map K gq
+noremap gq q
+
 
 map '' 'mzz
 map == 1z=
@@ -92,8 +95,6 @@ map == 1z=
 " normal mode.
 map <F1> <Esc>
 map! <F1> <Esc>
-
-map K gq
 
 " This makes :W and :Wq work just like :w and :wq.  
 command W w
