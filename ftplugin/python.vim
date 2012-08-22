@@ -20,20 +20,11 @@ set spell
 function! PythonFoldExpression()
 
     let line = getline(v:lnum)
-    let next_line = getline(v:lnum + 1)
-    let previous_line = getline(v:lnum - 1)
-
     let indent = indent(v:lnum)
     let fold_level = indent / &shiftwidth + 1
 
     let blank_pattern = '^\s*$'
     let fold_pattern = '^\s*\(class\s\|def\s\|@\)'
-
-    " If this line is not indented at all, or if it's an empty line and the
-    " next non-empty line isn't indented, then the fold level can be set to
-    " zero.  This is convenient for small helper functions.
-
-    " Coming soon...
 
     " Don't automatically nest more than two levels of folds.  This helps avoid
     " situations that confuse the algorithm, like functions inside loops.
@@ -46,6 +37,8 @@ function! PythonFoldExpression()
     " defined a class or function.  The fold level is based on the indentation
     " level of that class or function.
 
+    let previous_line = getline(v:lnum - 1)
+
     if line =~ fold_pattern
         if previous_line =~ fold_pattern
             return '='
@@ -57,8 +50,26 @@ function! PythonFoldExpression()
     " Consecutive blank lines decrease the fold level by 1.  This makes it
     " possible to separate the folds into groups.
     
+    let next_line = getline(v:lnum + 1)
+
     if (line =~ blank_pattern) && (next_line =~ blank_pattern)
         return 's1'
+    endif
+
+    " If this line is not indented at all, or if it's an empty line and the
+    " next non-empty line isn't indented, then the fold level can be set to
+    " zero.  This is convenient for small helper functions.
+
+    if (indent == 0) && (line !~ blank_pattern) 
+        return 0
+    endif
+
+    let next_nonblank_lnum = nextnonblank(v:lnum)
+    let next_nonblank_indent = indent(next_nonblank_lnum)
+
+    if (line =~ blank_pattern) && (next_line !~ fold_pattern) &&
+                \ (next_nonblank_indent == 0)
+        return 0
     endif
 
     " If none of the above criteria were met, keep the fold level the same as
@@ -83,7 +94,7 @@ function! PythonFoldText()
         let text = getline(v:foldstart + offset)
     endwhile
 
-    let text = substitute(text, ':', '', '')
+    let text = substitute(text, ':\s*$', '', '')
     let text = substitute(text, '#.*$', '', '')
 
     if text =~ '^\s*class\>'
@@ -92,9 +103,7 @@ function! PythonFoldText()
     endif
 
     let lines = 1 + v:foldend - v:foldstart
-    "let lines = ' ' . lines . ' lines '
-    "let lines = ' ' . lines . 'L '
-    let lines = ' + ' . lines . ' '
+    let lines = ' (' . lines . ')'
 
     let cutoff = &columns - strlen(lines)
     
