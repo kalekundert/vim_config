@@ -3,6 +3,9 @@
 syntax match textDemonstration '^\s\+[~#$>|] .*$' contains=@NoSpell
 syntax match textDemonstration '^\s\+[/~:].*$' contains=@NoSpell
 
+" Highlight the vim modeline syntax.
+syntax match textModeline "^vim: .*"  contains=@NoSpell
+
 " Strings within single-quotes should not be spell-checked.
 syntax region textVerbatim start="`" end="'" oneline contains=@NoSpell
 
@@ -16,4 +19,5 @@ syntax region textURL start="<" end=">" oneline contains=@NoSpell
 syntax keyword textLatin apo holo
 
 highlight textDemonstration gui=italic cterm=bold term=bold
+highlight textModeline guifg=LightGrey ctermfg=DarkGrey
 highlight textLatin gui=italic cterm=bold term=bold
