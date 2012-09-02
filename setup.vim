@@ -77,14 +77,19 @@ let &printexpr="(v:cmdarg=='' ? ".
     \" : system('mv '.v:fname_in.' '.v:cmdarg) + v:shell_error)"
 
 map Y y$
-map q ge
-map Q gE
-map K gq
+noremap q ge
+noremap Q gE
+noremap K gq
 noremap gq q
-
 
 map '' 'mzz
 map == 1z=
+
+"imap <F5> #!/usr/bin/env python<CR><CR>
+imap <F5> import argparse<CR><CR>
+         \parser = argparse.ArgumentParser()<CR>
+         \parser.add_argument()<CR>
+         \arguments = parser.parse_args()<CR>
 
 " This may be an easier way to enter normal mode.  Note that Ctrl-C is another
 " way to switch from insert mode to normal mode.
@@ -97,10 +102,10 @@ map <F1> <Esc>
 map! <F1> <Esc>
 
 " This makes :W and :Wq work just like :w and :wq.  
-command W w
-command Q q
-command Wq wq
-command WQ wq
+command! W w
+command! Q q
+command! Wq wq
+command! WQ wq
 
 " This causes the '?' key to behave like the '/' key, except the regular
 " expression used to search for whole words is entered automatically.
