@@ -83,10 +83,10 @@ else
     highlight SpellRare         guisp=DarkGray   ctermbg=DarkGray   gui=undercurl
     highlight SpellLocal        guisp=DarkGray   ctermbg=DarkGray   gui=undercurl
 
-    highlight DiffAdd           guibg=LightGreen                    gui=none
+    highlight DiffAdd           guibg=DarkGreen                     gui=none
     highlight DiffChange        guibg=White                         gui=none
-    highlight DiffDelete        guibg=LightBlue                     gui=none
-    highlight DiffText          guibg=LightRed                      gui=none
+    highlight DiffDelete        guibg=DarkBlue                      gui=none
+    highlight DiffText          guibg=DarkRed                       gui=none
 
     highlight Cursor            guifg=Black                         guibg=White
     highlight LineNr            guifg=Black      ctermfg=Black      guibg=DarkGray   ctermbg=DarkGray
@@ -94,9 +94,9 @@ else
 
     highlight Visual                                                guibg=DarkGray
     highlight MatchParen                                            guibg=Gray 
-    highlight Folded            guifg=Black      ctermfg=Black      guibg=DarkGray   ctermbg=DarkBlue
-    highlight Folded1           guifg=Black      ctermfg=Black      guibg=DarkGray   ctermbg=DarkBlue
-    highlight Folded2           guifg=Black      ctermfg=Black      guibg=DarkGray   ctermbg=DarkBlue
+    highlight Folded            guifg=Black      ctermfg=Black      guibg=DarkBlue   ctermbg=DarkBlue
+    highlight Folded1           guifg=White      ctermfg=White      guibg=DarkBlue   ctermbg=DarkBlue
+    highlight Folded2           guifg=White      ctermfg=White      guibg=DarkGray   ctermbg=DarkGray
 endif
 
 " Link the less common groups to the basic ones.

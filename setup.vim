@@ -1,118 +1,30 @@
-" Look into getting the :make command set up.  It looks like it could save
-" a lot of time, plus I would learn to use make.
-"
-" Here are some relevant help topics:
-"   :h make
-"   :h quickfix
-" 
-" Here are some relevant options:
-"   makeprg
-"   makeef
-"   shellpipe
-
-" Autocommands
-" ============
-" I might be able to use autocommands to automatically update my syntax files
-" upon being opened.  (i.e. adding types)
-"
-" Surround
-" ========
-" Also, I just stumbled across a vim plugin called surround, which is meant to
-" help deal with quotes, braces, parentheses, and anything else surrounding a
-" block of text.  The URL is:
-"
-"     http://www.vim.org/scripts/script.php?script_id=1697
-
-set nocompatible
-
+" General Options
+" ===============
 set nobackup
-set cpoptions+=I
-set backspace=indent,eol,start
 set wildignore=*.swp,*.pyc,*.class
-set shortmess+=I
-
-set formatoptions=tcrq
-set guioptions=ic
-set guifont=Monospace\ 10
-set laststatus=2
-
-set mouse=""
-set mousehide
-
-set ruler
-set showcmd
-set scrolloff=5
-
-set nowrap
-set textwidth=79
-
-set gdefault
-set incsearch
-set nohlsearch
-
-set softtabstop=4
-set shiftwidth=4
-set autoindent
-set expandtab
-
-set nospell
-set spelllang=en_us
-
+set nocompatible
+set cpoptions+=I
 set autoread
 set autowrite
-
 set fileformat=unix
 set fileformats=unix
-
-set foldcolumn=0
-set foldmethod=marker
+set nospell
+set spelllang=en_us
 set printdevice=GrayScale
 
-" Below is a script that I found on the web that makes vim print to postscript
-" files.  To use it, just remove the comment leaders and source this file.
+" Text Editing
+" ============
+retab
+filetype plugin indent on
 
-let &printexpr="(v:cmdarg=='' ? ".
-    \"system('lpr' . (&printdevice == '' ? '' : ' -P' . &printdevice)".
-    \". ' ' . v:fname_in) . delete(v:fname_in) + v:shell_error".
-    \" : system('mv '.v:fname_in.' '.v:cmdarg) + v:shell_error)"
-
-map Y y$
+noremap Y y$
 noremap q ge
 noremap Q gE
 noremap K gq
-noremap gq q
+noremap ` q
 
-map '' 'mzz
-map == 1z=
-
-"imap <F5> #!/usr/bin/env python<CR><CR>
-imap <F5> import argparse<CR><CR>
-         \parser = argparse.ArgumentParser()<CR>
-         \parser.add_argument()<CR>
-         \arguments = parser.parse_args()<CR>
-
-" This may be an easier way to enter normal mode.  Note that Ctrl-C is another
-" way to switch from insert mode to normal mode.
-"inoremap C-j <esc>
-"inoremap <esc> <nop>
-
-" Maps the F1 key to Esc, since I tend to hit F1 when I'm trying to enter
-" normal mode.
-map <F1> <Esc>
-map! <F1> <Esc>
-
-" This makes :W and :Wq work just like :w and :wq.  
-command! W w
-command! Q q
-command! Wq wq
-command! WQ wq
-
-" This causes the '?' key to behave like the '/' key, except the regular
-" expression used to search for whole words is entered automatically.
-"nmap ? /\<\><Left><Left>
-
-retab
-filetype plugin indent on
+noremap '' 'mzz
+noremap == 1z=
 
 let java_allow_cpp_keywords = 1
 let python_highlight_exceptions = 1
@@ -128,27 +40,89 @@ abbreviate }}}! }}}1
 abbreviate {{{@ {{{2
 abbreviate }}}@ }}}2
 
-if has("gui_running")
-    colorscheme light
+" Text Searching
+" ==============
+set gdefault
+set incsearch
+set nohlsearch
 
-    function! MyFoldHi(level)
-            return hlID("Folded".a:level)
-    endfunction 
+nmap <C-/> /\<\><Left><Left>
+nmap <C-?> ?\<\><Left><Left>
 
-else
-    colorscheme dark
+function! VisualSelection(direction) range
+    let l:saved_reg = @"
+    execute "normal! vgvy"
 
-    function! MyFoldHi(level)
-            return hlID("Folded")
-    endfunction 
+    let l:pattern = escape(@", '\\/.*$^~[]')
+    let l:pattern = substitute(l:pattern, "\n$", "", "")
 
-endif
+    if a:direction == 'b'
+        execute "normal ?" . l:pattern . "^M"
+    elseif a:direction == 'f'
+        execute "normal /" . l:pattern . "^M"
+    endif
 
-" Try to color folds based on their level, but don't complain if the source
-" patch isn't installed.
+    let @/ = l:pattern
+    let @" = l:saved_reg
+endfunction
 
-silent! setlocal foldhighlight=MyFoldHi(v:foldlevel)
+vnoremap <silent> * :call VisualSelection('f')<CR>
+vnoremap <silent> # :call VisualSelection('b')<CR>
+
+" Text Formatting
+" ===============
+set backspace=indent,eol,start
+set formatoptions=t,croq,wan
+set shortmess+=I
+set nowrap
+
+set softtabstop=4
+set shiftwidth=4
+set autoindent
+set expandtab
+
+let &textwidth=&columns - 1
+
+" User Interface
+" ==============
+set mouse=""
+set mousehide
+set guioptions=ic
+set guifont=Monospace\ 10
+set laststatus=2
+set showcmd
+set ruler
+
+set foldmethod=marker
+set scrolloff=5
+set lazyredraw
+
+function! FoldHighlight(level)
+    return hlID("Folded" . a:level)
+endfunction 
 
 syntax enable
+colorscheme basic
+set foldhighlight=FoldHighlight(v:foldlevel)
+
+map <F1> <Esc>
+map! <F1> <Esc>
+
+map <C-j> <C-W>j
+map <C-k> <C-W>k
+map <C-h> <C-W>h
+map <C-l> <C-W>l
+
+nnoremap <Space> :
+
+command! W w
+command! Q q
+command! Wq wq
+command! WQ wq
+
+"let &printexpr="(v:cmdarg=='' ? ".
+"    \"system('lpr' . (&printdevice == '' ? '' : ' -P' . &printdevice)".
+"    \". ' ' . v:fname_in) . delete(v:fname_in) + v:shell_error".
+"    \" : system('mv '.v:fname_in.' '.v:cmdarg) + v:shell_error)"
 
 " vim: nofoldenable
