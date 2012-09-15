@@ -1,43 +1,62 @@
-" Things to Do
-" ============
-" 1. Handle long function names.  Long names need to be truncated, otherwise
-"    they push the line count off the screen.  Furthermore, sometimes I break
-"    the argument list onto multiple lines.  This could possibly confuse the
-"    foldtext function.
-"
-" 2. Add support for custom fold markers.  I haven't thought about it much, but
-"    I like the idea of marking folds using multpile pound signs.  In other
-"    words, '### .*' indicates the start of a level three fold.
-
-" Use the structure of the code to create folds. 
-setlocal foldmethod=expr
-setlocal foldexpr=PythonFoldExpression()
-setlocal foldtext=PythonFoldText()
-
-" Enable spell checking
+" Enable spell checking:
 set spell
 
-function! PythonFoldExpression()
+" Change the auto-formatting options:
+set formatoptions-=t
 
-    let line = getline(v:lnum)
-    let indent = indent(v:lnum)
+" Define macros for a few common code snippets:
+imap <F5> #!/usr/bin/env python<CR><CR>
+imap <F6> import argparse<CR><CR>
+         \parser = argparse.ArgumentParser()<CR>
+         \parser.add_argument()<CR>
+         \arguments = parser.parse_args()<CR>
+imap <F7> if __name__ == '__main__':<CR>    pass<CR>
+imap <F8> from __future__ import division<CR>
+
+" Use the structure of the code to create folds: 
+setlocal foldmethod=expr
+setlocal foldexpr=PythonFoldExpressionCaller()
+setlocal foldtext=PythonFoldTextCaller()
+
+function! PythonFoldExpression(lnum)    " {{{1
+
+    let line = getline(a:lnum)
+    let indent = indent(a:lnum)
     let fold_level = indent / &shiftwidth + 1
 
     let blank_pattern = '^\s*$'
-    let fold_pattern = '^\s*\(class\s\|def\s\|@\)'
+    let fold_pattern = '^\s*\(class\s\|def\s\|@\|if __name__\)'
 
-    " Don't automatically nest more than two levels of folds.  This helps avoid
-    " situations that confuse the algorithm, like functions inside loops.
+    " Don't automatically nest more than two levels of folds.  This helps both
+    " to speed up the script and to avoid situations that confuse the
+    " algorithm, like functions inside loops.
 
     if fold_level > 2
         return '='
+    endif
+
+    " Respect manual fold markers.  The markers recognized by this script have
+    " the same format as the markers that vim recognizes by default, namely
+    " `{{{n' and `}}}n', except only one-digit numbers are allowed.
+
+    let start_pattern = '{{{\d\+'
+    let end_pattern = '}}}d\+'
+
+    if line =~ start_pattern
+        let index = match(line, start_pattern) + 3
+        return '>' . line[index]
+    endif
+
+    if line =~ end_pattern
+        let index = match(line, end_pattern) + 3
+        return '<' . line[index]
     endif
 
     " Each class and function starts a new fold, unless the previous line also
     " defined a class or function.  The fold level is based on the indentation
     " level of that class or function.
 
-    let previous_line = getline(v:lnum - 1)
+    let previous_line = getline(a:lnum - 1)
 
     if line =~ fold_pattern
         if previous_line =~ fold_pattern
@@ -50,26 +69,10 @@ function! PythonFoldExpression()
     " Consecutive blank lines decrease the fold level by 1.  This makes it
     " possible to separate the folds into groups.
     
-    let next_line = getline(v:lnum + 1)
+    let next_line = getline(a:lnum + 1)
 
     if (line =~ blank_pattern) && (next_line =~ blank_pattern)
         return 's1'
-    endif
-
-    " If this line is not indented at all, or if it's an empty line and the
-    " next non-empty line isn't indented, then the fold level can be set to
-    " zero.  This is convenient for small helper functions.
-
-    if (indent == 0) && (line !~ blank_pattern) 
-        return 0
-    endif
-
-    let next_nonblank_lnum = nextnonblank(v:lnum)
-    let next_nonblank_indent = indent(next_nonblank_lnum)
-
-    if (line =~ blank_pattern) && (next_line !~ fold_pattern) &&
-                \ (next_nonblank_indent == 0)
-        return 0
     endif
 
     " If none of the above criteria were met, keep the fold level the same as
@@ -80,29 +83,29 @@ function! PythonFoldExpression()
 
 endfunction
 
-function! PythonFoldText()
+function! PythonFoldText(foldstart, foldend)    " {{{1
 
     " Label each fold with the first line of text within that fold and the
     " number of lines contained by the fold.
 
-    let text = getline(v:foldstart)
+    let text = getline(a:foldstart)
     let offset = 0
 
     while text =~ '^\s*@'
         " Don't show decorators.
         let offset += 1
-        let text = getline(v:foldstart + offset)
+        let text = getline(a:foldstart + offset)
     endwhile
 
     let text = substitute(text, ':\s*$', '', '')
-    let text = substitute(text, '#.*$', '', '')
+    "let text = substitute(text, '#.*$', '', '')
 
     if text =~ '^\s*class\>'
         " Don't show parent classes.
         let text = substitute(text, '\s*(.*)', '', '')
     endif
 
-    let lines = 1 + v:foldend - v:foldstart
+    let lines = 1 + a:foldend - a:foldstart
     let lines = ' (' . lines . ')'
 
     let cutoff = &columns - strlen(lines)
@@ -120,3 +123,11 @@ function! PythonFoldText()
     return text . padding . lines
 
 endfunction
+
+function! PythonFoldExpressionCaller()  " {{{1
+    return PythonFoldExpression(v:lnum)
+endfunction
+
+function! PythonFoldTextCaller()    " {{{1
+    return PythonFoldText(v:foldstart, v:foldend)
+endfunction     " }}}1
