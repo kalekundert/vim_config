@@ -1,12 +1,10 @@
-let foo='rest'
+" Enable spell checking
+set spell
 
 " Use the structure of the code to create folds. 
 set foldmethod=expr
 set foldexpr=RestFoldExpression()
 set foldtext=RestFoldText()
-
-" Enable spell checking
-set spell
 
 " RestFoldExpression {{{1
 function! RestFoldExpression()

@@ -30,7 +30,7 @@ let java_allow_cpp_keywords = 1
 let python_highlight_exceptions = 1
 let python_highlight_space_errors = 1
 let python_no_builtin_highlight = 1
-let fortran_dialect = "f77"
+let fortran_dialect = 'f77'
 let fortran_have_tabs = 1
 let fortran_fixed_source = 1
 
@@ -39,35 +39,6 @@ abbreviate {{{! {{{1
 abbreviate }}}! }}}1
 abbreviate {{{@ {{{2
 abbreviate }}}@ }}}2
-
-" Text Searching
-" ==============
-set gdefault
-set incsearch
-set nohlsearch
-
-nmap <C-/> /\<\><Left><Left>
-nmap <C-?> ?\<\><Left><Left>
-
-function! VisualSelection(direction) range
-    let l:saved_reg = @"
-    execute "normal! vgvy"
-
-    let l:pattern = escape(@", '\\/.*$^~[]')
-    let l:pattern = substitute(l:pattern, "\n$", "", "")
-
-    if a:direction == 'b'
-        execute "normal ?" . l:pattern . "^M"
-    elseif a:direction == 'f'
-        execute "normal /" . l:pattern . "^M"
-    endif
-
-    let @/ = l:pattern
-    let @" = l:saved_reg
-endfunction
-
-vnoremap <silent> * :call VisualSelection('f')<CR>
-vnoremap <silent> # :call VisualSelection('b')<CR>
 
 " Text Formatting
 " ===============
@@ -83,6 +54,35 @@ set expandtab
 
 let &textwidth=&columns - 1
 
+" Text Searching
+" ==============
+set gdefault
+set incsearch
+set nohlsearch
+
+nmap <C-/> /\<\><Left><Left>
+nmap <C-?> ?\<\><Left><Left>
+
+function! VisualSelection(direction) range
+    let l:saved_reg = @"
+    execute 'normal! vgvy'
+
+    let l:pattern = escape(@", '\\/.*$^~[]')
+    let l:pattern = substitute(l:pattern, '\n$', '', '')
+
+    if a:direction == 'b'
+        execute 'normal ?' . l:pattern . '^M'
+    elseif a:direction == 'f'
+        execute 'normal /' . l:pattern . '^M'
+    endif
+
+    let @/ = l:pattern
+    let @" = l:saved_reg
+endfunction
+
+vnoremap <silent> * :call VisualSelection('f')<CR>
+vnoremap <silent> # :call VisualSelection('b')<CR>
+
 " User Interface
 " ==============
 set mouse=""
@@ -97,8 +97,12 @@ set foldmethod=marker
 set scrolloff=5
 set lazyredraw
 
+if !has('gui_running')
+    set background=dark
+endif
+
 function! FoldHighlight(level)
-    return hlID("Folded" . a:level)
+    return hlID('Folded' . a:level)
 endfunction 
 
 syntax enable
@@ -113,7 +117,7 @@ map <C-k> <C-W>k
 map <C-h> <C-W>h
 map <C-l> <C-W>l
 
-nnoremap <Space> :
+nnoremap <Tab> :
 
 command! W w
 command! Q q
