@@ -11,7 +11,7 @@ if exists("syntax_on")
 endif
 
 set t_Co=256
-let g:colors_name="default"
+let g:colors_name="primary"
 
 " When the background is light, choose dark colors.
 if &background == "light"

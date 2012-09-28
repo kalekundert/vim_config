@@ -12,7 +12,7 @@ if exists("syntax_on")
   syntax reset
 endif
 
-let g:colors_name="simple"
+let g:colors_name="hardcopy"
 
 " Pick the text color based on the background.
 if &background == "dark"

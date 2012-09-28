@@ -12,6 +12,8 @@ set nospell
 set spelllang=en_us
 set printdevice=GrayScale
 
+command! Vrc source $MYVIMRC
+
 " Text Editing
 " ============
 retab
@@ -22,9 +24,9 @@ noremap q ge
 noremap Q gE
 noremap K gq
 noremap ` q
-
 noremap '' 'mzz
 noremap == 1z=
+map csw~ csw'r`
 
 let java_allow_cpp_keywords = 1
 let python_highlight_exceptions = 1
@@ -53,6 +55,9 @@ set autoindent
 set expandtab
 
 let &textwidth=&columns - 1
+let &formatlistpat='^\s*\d\+[\]:.)}\t]\s\+\|^\s*\w[\]:.)}]\s\+'
+
+map <leader>K v}k:s/ *$/ /<CR>$x<C-O>gq}
 
 " Text Searching
 " ==============
@@ -60,8 +65,8 @@ set gdefault
 set incsearch
 set nohlsearch
 
-nmap <C-/> /\<\><Left><Left>
-nmap <C-?> ?\<\><Left><Left>
+nmap g/ /\<\><Left><Left>
+nmap g? ?\<\><Left><Left>
 
 function! VisualSelection(direction) range
     let l:saved_reg = @"
@@ -106,7 +111,7 @@ function! FoldHighlight(level)
 endfunction 
 
 syntax enable
-colorscheme basic
+colorscheme primary
 set foldhighlight=FoldHighlight(v:foldlevel)
 
 map <F1> <Esc>

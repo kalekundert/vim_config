@@ -1,1 +1,1 @@
-set wrap lbr spell
+set spell
