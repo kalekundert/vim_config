@@ -1,0 +1,48 @@
+snippet #!
+	#!/usr/bin/env python
+
+snippet main
+	if __name__ == '__main__':
+		${1:pass}
+
+snippet for
+	for ${1:needle} in ${2:haystack}:
+		${3:pass}
+
+snippet while
+	while ${1:True}:
+		${2:pass}
+
+snippet try
+	try:
+		${1:pass}
+	except ${2:Exception} as ${3:e}:
+		${4:raise $3}
+
+snippet class
+	class ${1:ClassName}(${2:object}):
+		"""${3:docstring for $1}"""
+		def __init__(self, ${4:args}):
+			${5:super($1, self).__init__()}
+			self.$4 = $4
+			${6}
+
+snippet def
+	def ${1:name}(self, ${2:args}):
+		${3:pass}
+
+snippet deff
+	def ${1:name}(${2:`indent('.') ? 'self' : ''`}):
+		${3:pass}
+
+snippet get
+	def get_${1:name}(self):
+		return self.$1
+
+snippet set
+	def set_${1:name}(self, $1):
+		self.$1 = $1
+
+snippet .
+	self.
+
