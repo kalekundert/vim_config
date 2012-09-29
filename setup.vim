@@ -112,7 +112,7 @@ endfunction
 
 syntax enable
 colorscheme primary
-set foldhighlight=FoldHighlight(v:foldlevel)
+silent! set foldhighlight=FoldHighlight(v:foldlevel)
 
 map <F1> <Esc>
 map! <F1> <Esc>
