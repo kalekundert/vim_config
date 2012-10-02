@@ -26,7 +26,6 @@ noremap K gq
 noremap ` q
 noremap '' 'mzz
 noremap == 1z=
-map csw~ csw'r`
 
 let java_allow_cpp_keywords = 1
 let python_highlight_exceptions = 1
@@ -121,7 +120,6 @@ map <C-j> <C-W>j
 map <C-k> <C-W>k
 map <C-h> <C-W>h
 map <C-l> <C-W>l
-map <C-=> <C-W>=
 
 nnoremap <Tab> :
 
