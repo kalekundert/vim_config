@@ -25,7 +25,8 @@ function! PythonFoldExpression(lnum)    " {{{1
     let fold_level = indent / &shiftwidth + 1
 
     let blank_pattern = '^\s*$'
-    let fold_pattern = '^\s*\(class\s\|def\s\|@\|if __name__\)'
+    let manual_pattern = '# .*(fold)'
+    let fold_pattern = '^\s*\(class\s\|def\s\|@\|if __name__\s\)'
 
     " Don't automatically nest more than two levels of folds.  This helps both
     " to speed up the script and to avoid situations that confuse the
@@ -35,21 +36,12 @@ function! PythonFoldExpression(lnum)    " {{{1
         return '='
     endif
 
-    " Respect manual fold markers.  The markers recognized by this script have
-    " the same format as the markers that vim recognizes by default, namely
-    " `{{{n' and `}}}n', except only one-digit numbers are allowed.
+    " Respect manual fold markers.  Any line that contains both a hash and the 
+    " string '(fold)' will be taken as the start of a fold.  The fold level 
+    " will be taken from the indentation of that line.
 
-    let start_pattern = '{{{\d\+'
-    let end_pattern = '}}}d\+'
-
-    if line =~ start_pattern
-        let index = match(line, start_pattern) + 3
-        return '>' . line[index]
-    endif
-
-    if line =~ end_pattern
-        let index = match(line, end_pattern) + 3
-        return '<' . line[index]
+    if line =~ manual_pattern
+        return '>' . fold_level
     endif
 
     " Each class and function starts a new fold, unless the previous line also
@@ -85,42 +77,71 @@ endfunction
 
 function! PythonFoldText(foldstart, foldend)    " {{{1
 
-    " Label each fold with the first line of text within that fold and the
-    " number of lines contained by the fold.
+    " Find the line that should be used to summarize the fold.  This is usually 
+    " the first line, but decorators are explicitly skipped.
 
-    let text = getline(a:foldstart)
+    let line = getline(a:foldstart)
     let offset = 0
 
-    while text =~ '^\s*@'
-        " Don't show decorators.
+    while line =~ '^\s*@'
         let offset += 1
-        let text = getline(a:foldstart + offset)
+        let line = getline(a:foldstart + offset)
     endwhile
 
-    let text = substitute(text, ':\s*$', '', '')
-    "let text = substitute(text, '#.*$', '', '')
+    " Break the line into two parts: a title and a set of flags.  The title 
+    " will be left-justified, while the flags will be concatenated together and 
+    " right-justified.
 
-    if text =~ '^\s*class\>'
-        " Don't show parent classes.
-        let text = substitute(text, '\s*(.*)', '', '')
+    let comment_pattern = '# .*(fold)'
+    let code_pattern = '^\s*\(class\s\|def\s\|if __name__\s\)'
+
+    if line =~ comment_pattern
+        let index = stridx(line, '(fold)') - 1
+        let title = substitute(line[0:index], '^\(.\{-}\)#\s*$', '\1', '')
+        let flags = []
+
+    elseif line =~ code_pattern
+        let fields = split(line, '#')
+
+        " Tags are taken to be parenthetical phrases found within an inline
+        " comment.  Line that don't have an inline comment can be trivially 
+        " processed, so this case is handled specially.
+
+        if len(fields) == 1
+            let title = line
+            let flags = []
+        else
+            let title = fields[0]
+            let flags = matchlist(fields[1], '(\([^)]\+\))')
+            let flags = filter(flags[1:], 'v:val != ""')
+        endif
+
+    else
+        let title = line
+        let flags = []
+
     endif
 
-    let lines = 1 + a:foldend - a:foldstart
-    let lines = ' (' . lines . ')'
+    " Format a succinct fold message.  The title is stripped of whitespace and 
+    " truncated, if it is too long to fit on the screen.  The total number of 
+    " folded lines are added as an extra tag, and all the flags are wrapped in 
+    " parenthesis.
 
-    let cutoff = &columns - strlen(lines)
+    let flags = add(flags, 1 + a:foldend - a:foldstart)
+    let status = ' (' . join(flags, ') (') . ')'
+
+    let cutoff = &columns - strlen(status)
+    let title = substitute(title, '^\(.\{-}\)\s*$', '\1', '')
     
-    if strlen(text) >= cutoff
-        " Truncate long function names.
-        let text = text[0:cutoff - 4] . '...'
+    if strlen(title) >= cutoff
+        let title = title[0:cutoff - 4] . '...'
         let padding = ''
     else
-        " Otherwise fill extra space with dashes.
-        let padding = cutoff - strlen(text) - 1
+        let padding = cutoff - strlen(title) - 1
         let padding = ' ' . repeat(' ', padding)
     endif
 
-    return text . padding . lines
+    return title . padding . status
 
 endfunction
 
