@@ -14,9 +14,9 @@ imap <F7> if __name__ == '__main__':<CR>    pass<CR>
 imap <F8> from __future__ import division<CR>
 
 " Use the structure of the code to create folds: 
-setlocal foldmethod=expr
-setlocal foldexpr=PythonFoldExpressionCaller()
-setlocal foldtext=PythonFoldTextCaller()
+set foldmethod=expr
+set foldexpr=PythonFoldExpressionCaller()
+set foldtext=PythonFoldTextCaller()
 
 function! PythonFoldExpression(lnum)    " {{{1
 

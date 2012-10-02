@@ -9,8 +9,9 @@ augroup filetypedetect
     autocmd BufRead,BufNewFile *.txt    setfiletype text
     autocmd BufRead,BufNewFile *.rst    setfiletype rest
     autocmd BufRead,BufNewFile *.tex    setfiletype tex
+    autocmd BufRead,BufNewFile *.lit    setfiletype literature
     autocmd BufRead,BufNewFile *.mdp    setfiletype mdp
-    autocmd BufRead,BufNewFile *.html,*.xml     setfiletype sgml
-    autocmd BufRead,BufNewFile directory.txt,*.notes    setfiletype directory
+    autocmd BufRead,BufNewFile *.xml    setfiletype sgml
+    autocmd BufRead,BufNewFile *.html   setfiletype sgml
 augroup end
 
