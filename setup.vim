@@ -12,7 +12,7 @@ set nospell
 set spelllang=en_us
 set printdevice=GrayScale
 
-command! Vrc source $MYVIMRC
+command! Rc source $MYVIMRC
 
 " Text Editing
 " ============
@@ -48,6 +48,7 @@ set formatoptions=t,croq,wan
 set shortmess+=I
 set nowrap
 
+set tabstop=4
 set softtabstop=4
 set shiftwidth=4
 set autoindent
