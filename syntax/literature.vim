@@ -26,7 +26,7 @@ syntax match litLatin       "S\.[ \n]\+mansoni" contained contains=@NoSpell
 syntax match litLatin       "S\.[ \n]\+japonicum" contained contains=@NoSpell
 syntax match litLatin       "S\.[ \n]\+ha\?ematobium" contained contains=@NoSpell
 
-syntax match litAcronym     "[A-Z0-9]\{2,}" contained contains=@NoSpell
+syntax match litAcronym     "\w*\u\w*\u\w*" contained contains=@NoSpell
 
 syntax region litVerbatim start="`" end="'" oneline contains=@NoSpell
 syntax region litVerbatim start="<" end=">" oneline contains=@NoSpell

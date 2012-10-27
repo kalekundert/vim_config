@@ -46,6 +46,7 @@ abbreviate }}}@ }}}2
 set backspace=indent,eol,start
 set formatoptions=t,croq,wan
 set shortmess+=I
+set textwidth=79
 set nowrap
 
 set tabstop=4
@@ -54,7 +55,6 @@ set shiftwidth=4
 set autoindent
 set expandtab
 
-let &textwidth=&columns - 1
 let &formatlistpat='^\s*\d\+[\]:.)}\t]\s\+\|^\s*\w[\]:.)}]\s\+'
 
 map <leader>K v}k:s/ *$/ /<CR>$x<C-O>gq}
