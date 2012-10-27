@@ -1,0 +1,11 @@
+\documentclass{article}
+
+\usepackage{mydocument}
+\usepackage{myscience}
+
+\begin{document}
+
+% cursor: 8 del
+
+
+\end{document}
