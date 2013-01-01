@@ -5,6 +5,7 @@ endif
 augroup filetypedetect
     autocmd BufRead,BufNewFile *.sh         setfiletype zsh
     autocmd BufRead,BufNewFile *.pym        setfiletype python
+    autocmd BufRead,BufNewFile SCons*       setfiletype python
     autocmd BufRead,BufNewFile *.pml        setfiletype pymol
     autocmd BufRead,BufNewFile *.txt        setfiletype text
     autocmd BufRead,BufNewFile *.rst        setfiletype rest
