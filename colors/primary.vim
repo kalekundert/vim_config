@@ -94,7 +94,7 @@ else
 
     highlight Visual                                                guibg=DarkGray
     highlight MatchParen                                            guibg=Gray 
-    highlight Folded            guifg=Black      ctermfg=Black      guibg=DarkBlue   ctermbg=DarkBlue
+    highlight Folded            guifg=White      ctermfg=White      guibg=DarkBlue   ctermbg=DarkBlue
     highlight Folded1           guifg=White      ctermfg=White      guibg=DarkBlue   ctermbg=DarkBlue
     highlight Folded2           guifg=White      ctermfg=White      guibg=DarkGray   ctermbg=DarkGray
 endif
