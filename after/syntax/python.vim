@@ -20,10 +20,6 @@ syntax region pythonString start="u\=r\='" skip="\\'" end="'" oneline
 syntax region pythonVerbatim start="`" end="'" oneline
             \ transparent keepend contained contains=@NoSpell
 
-" Try to avoid spellchecking acronyms.
-syntax match pythonAcronym "[A-Z0-9]\{2,}"
-            \ transparent contained contains=@NoSpell
-
 " Match docstrings as comments, rather than strings.
 syntax match pythonComment " *#.*" 
             \ contains=pythonVerbatim,pythonAcronym,@Spell
