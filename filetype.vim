@@ -11,6 +11,7 @@ augroup filetypedetect
     autocmd BufRead,BufNewFile *.rst        setfiletype rest
     autocmd BufRead,BufNewFile *.tex        setfiletype tex
     autocmd BufRead,BufNewFile *.lit        setfiletype literature
+    autocmd BufRead,BufNewFile *.dox    setfiletype conf
     autocmd BufRead,BufNewFile *.mdp        setfiletype mdp
     autocmd BufRead,BufNewFile *.xml        setfiletype sgml
     autocmd BufRead,BufNewFile *.html       setfiletype sgml
