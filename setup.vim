@@ -10,7 +10,7 @@ set fileformat=unix
 set fileformats=unix
 set nospell
 set spelllang=en_us
-set printdevice=GrayScale
+set printdevice=KortemmeLab
 
 command! Rc source $MYVIMRC
 
@@ -31,15 +31,19 @@ let java_allow_cpp_keywords = 1
 let python_highlight_exceptions = 1
 let python_highlight_space_errors = 1
 let python_no_builtin_highlight = 1
-let fortran_dialect = 'f77'
-let fortran_have_tabs = 1
-let fortran_fixed_source = 1
+let fortran_dialect = 'f90'
+
+autocmd FileType c,cpp set comments^=:///
+autocmd FileType c,cpp set comments^=://!
 
 abbreviate slef self
 abbreviate {{{! {{{1
 abbreviate }}}! }}}1
 abbreviate {{{@ {{{2
 abbreviate }}}@ }}}2
+
+command! R 0r
+let g:LargeFile=2500
 
 " Text Formatting
 " ===============
@@ -55,7 +59,9 @@ set shiftwidth=4
 set autoindent
 set expandtab
 
-let &formatlistpat='^\s*\d\+[\]:.)}\t]\s\+\|^\s*\w[\]:.)}]\s\+'
+"let &formatlistpat='^\s*\d\+[\]:.)}\t]\s\+\|^\s*\w[\]:.)}]\s\+'
+"let &formatlistpat='^# \d\+.\s'
+"let &formatlistpat='^\s*\d\+[\]:.)}\t ]\s*'
 
 map <leader>K v}k:s/ *$/ /<CR>$x<C-O>gq}
 
@@ -111,7 +117,7 @@ function! FoldHighlight(level)
 endfunction 
 
 syntax enable
-colorscheme primary
+colorscheme solarized
 silent! set foldhighlight=FoldHighlight(v:foldlevel)
 
 map <F1> <Esc>
