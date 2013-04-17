@@ -108,8 +108,11 @@ set foldmethod=marker
 set scrolloff=5
 set lazyredraw
 
-if !has('gui_running')
-    set background=dark
+if has('gui_running')
+  set background=light
+else
+  set background=dark
+  set t_Co=256
 endif
 
 function! FoldHighlight(level)
