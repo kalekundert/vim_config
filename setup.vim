@@ -11,6 +11,8 @@ set fileformats=unix
 set nospell
 set spelllang=en_us
 set printdevice=KortemmeLab
+set encoding=utf-8
+set listchars=tab:→\ ,trail:·
 
 command! Rc source $MYVIMRC
 
@@ -64,6 +66,8 @@ set expandtab
 "let &formatlistpat='^\s*\d\+[\]:.)}\t ]\s*'
 
 map <leader>K v}k:s/ *$/ /<CR>$x<C-O>gq}
+
+autocmd FileType gitcommit set textwidth=72
 
 " Text Searching
 " ==============

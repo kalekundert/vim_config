@@ -2,7 +2,7 @@ syntax clear
 syntax sync minlines=5
 
 syntax match litTopRule     "^=\{79}$\n" nextgroup=litTitle
-syntax match litTitle       "^\a.*$\n" nextgroup=litTitle,litMidRule contains=@NoSpell
+syntax match litTitle       "^\((\d\{4}) \)\=\a.*$\n" nextgroup=litTitle,litMidRule contains=@NoSpell
 syntax match litMidRule     "^-\{79}$\n" nextgroup=litAuthor
 syntax match litAuthor      "^\a.*$\n" nextgroup=litAuthor contains=@NoSpell
 

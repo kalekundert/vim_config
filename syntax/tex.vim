@@ -2,9 +2,10 @@
 syntax spell toplevel
 
 syntax match latexCommand '\\[a-z]*' contains=@NoSpell
-syntax match latexComment '^ *%.*$' contains=@Spell
+syntax match latexPercent '\\%'
+syntax match latexComment '%.*$' contains=@Spell
 
-syntax region latexArgument start="{" end="}" contains=@NoSpell
+syntax region latexArgument start="{" end="}" contains=@NoSpell,latexArgument
 syntax region latexOptional start="\[" end="\]" contains=@NoSpell
 
 " Linking the HTML groups to standard syntax groups.
