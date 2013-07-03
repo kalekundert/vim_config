@@ -4,6 +4,9 @@ set spell
 " Change the auto-formatting options:
 set formatoptions-=t
 
+" Make tabs clearly visible:
+set list listchars=tab:→\ 
+
 " Define macros for a few common code snippets:
 imap <F5> #!/usr/bin/env python<CR><CR>
 imap <F6> import argparse<CR><CR>
