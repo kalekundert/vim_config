@@ -11,5 +11,8 @@ EXPECTED_PATH=$(dirname $SCRIPT_PATH)
 PROMPT="Please confirm the path to the installation: "
 read -p "$PROMPT" -e -i "$EXPECTED_PATH" INSTALL_PATH
 
-ln -nsf $INSTALL_PATH ~/.vim
+if [ ! $INSTALL_PATH -ef ~/.vim ]; then
+    ln -nsf $INSTALL_PATH ~/.vim
+fi
+
 ln -nsf $INSTALL_PATH/setup.vim ~/.vimrc
