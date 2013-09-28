@@ -9,11 +9,14 @@ syntax match textModeline "^vim: .*"  contains=@NoSpell
 " Strings within single-quotes should not be spell-checked.
 syntax region textVerbatim start="`" end="'" oneline contains=@NoSpell
 
+" URLs (denoted by angle-brackets) should also not be spell checked.
+syntax region textURL start="<" end=">" oneline contains=@NoSpell
+
 " Try to avoid spell-checking acronyms.
 syntax match textAcronym "[A-Z0-9]\{2,}" contains=@NoSpell
 
-" URLs (denoted by angle-brackets) should also not be spell checked.
-syntax region textURL start="<" end=">" oneline contains=@NoSpell
+" Try to avoid spell-checking file paths.
+syntax match textFilePath "\S*\.\(txt\|py\|sh\)" contains=@NoSpell
 
 " Recognize a few non-english phrases.
 syntax keyword textLatin apo holo
