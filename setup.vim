@@ -50,7 +50,7 @@ let g:LargeFile=2500
 " Text Formatting
 " ===============
 set backspace=indent,eol,start
-set formatoptions=t,croq,wan
+set formatoptions=t,croq,wn
 set shortmess+=I
 set textwidth=79
 set nowrap
@@ -64,6 +64,7 @@ set expandtab
 "let &formatlistpat='^\s*\d\+[\]:.)}\t]\s\+\|^\s*\w[\]:.)}]\s\+'
 "let &formatlistpat='^# \d\+.\s'
 "let &formatlistpat='^\s*\d\+[\]:.)}\t ]\s*'
+"let &formatlistpat='^\s*[a-z1-9]\+[\]:.)}]\s*|^\s*[-*]\s*'
 
 map <leader>K v}k:s/ *$/ /<CR>$x<C-O>gq}
 

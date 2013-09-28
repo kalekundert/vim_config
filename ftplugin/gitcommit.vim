@@ -1,2 +1,2 @@
-set spell
 set formatoptions+=a
+set spell

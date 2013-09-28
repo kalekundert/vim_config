@@ -2,6 +2,7 @@
 set spell
 
 " Change the auto-formatting options:
+set formatoptions+=a
 set formatoptions-=t
 
 " Make tabs clearly visible:

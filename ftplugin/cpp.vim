@@ -4,3 +4,4 @@ set shiftwidth=2
 set noexpandtab
 set autoindent
 set spell
+set formatoptions+=a

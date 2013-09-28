@@ -1,6 +1,9 @@
 " Enable spell checking.
 set spell
 
+" Turn on automatic formatting.
+set formatoptions+=a
+
 " Define abbreviations for two key strings.
 abbreviate === ===============================================================================
 abbreviate --- -------------------------------------------------------------------------------

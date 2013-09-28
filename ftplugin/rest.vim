@@ -1,5 +1,8 @@
-" Enable spell checking
+" Enable spell checking.
 set spell
+
+" Turn on automatic formatting.
+set formatoptions+=a
 
 " Use the structure of the code to create folds. 
 set foldmethod=expr
