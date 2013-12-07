@@ -20,8 +20,9 @@ syn match cppFunctionComment "[a-zA-Z0-9_]\+()"
             \ contains=@NoSpell contained transparent
 syn cluster cCommentGroup add=cppFunctionComment
 
-" Don't spell-check the name of the file being edited.
+" Don't spell-check the name of the file being edited in strings or comments.
 let filename = split(expand('%:t'), '\.')[0]
+execute "syn keyword cSpecial " . filename . " contained transparent"
 execute "syn keyword cppFileName " . filename . " contained transparent"
 syn cluster cCommentGroup add=cppFileName
 

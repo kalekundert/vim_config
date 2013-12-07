@@ -49,9 +49,16 @@ function! CppFoldText(foldstart, foldend)    " {{{1
 
     while 1
         let line = getline(line_counter)
+        let line_counter += 1
+        let lines_searched += 1
 
         " Skip doxygen comments
         if line =~ '^\s*\/\/\/' || line =~ '@'
+            continue
+        endif
+
+        " Skip blank start markers
+        if line =~ '^\s*\/\/ {{{'
             continue
         endif
 
@@ -65,11 +72,8 @@ function! CppFoldText(foldstart, foldend)    " {{{1
             break
         endif
 
-        let line_counter += 1
-        let lines_searched += 1
-
         " Give up after three lines.
-        if line_counter > a:foldend || lines_searched > 3
+        if line_counter > a:foldend
             let line = getline(a:foldstart)
             break
         endif

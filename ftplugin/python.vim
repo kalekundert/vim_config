@@ -132,12 +132,12 @@ function! PythonFoldText(foldstart, foldend)    " {{{1
     " parenthesis.
 
     let flags = add(flags, 1 + a:foldend - a:foldstart)
-    let status = ' (' . join(flags, ') (') . ')'
+    let status = '(' . join(flags, ') (') . ')'
 
     let cutoff = &columns - strlen(status)
     let title = substitute(title, '^\(.\{-}\)\s*$', '\1', '')
     
-    if strlen(title) >= cutoff
+    if strlen(title) > cutoff
         let title = title[0:cutoff - 4] . '...'
         let padding = ''
     else
