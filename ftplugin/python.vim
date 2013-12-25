@@ -1,5 +1,6 @@
 " Enable spell checking:
 set spell
+set spellcapcheck=""
 
 " Change the auto-formatting options:
 set formatoptions+=a
@@ -31,6 +32,8 @@ function! PythonFoldExpression(lnum)    " {{{1
     let blank_pattern = '^\s*$'
     let manual_pattern = '# .*(fold)'
     let fold_pattern = '^\s*\(class\s\|def\s\|@\|if __name__\s\)'
+    let doc_open_pattern = '^\s*""" $'
+    let doc_close_pattern = '^\s*"""$'
 
     " Don't automatically nest more than two levels of folds.  This helps both
     " to speed up the script and to avoid situations that confuse the
@@ -71,6 +74,17 @@ function! PythonFoldExpression(lnum)    " {{{1
         return 's1'
     endif
 
+    " Recognize docstrings that begin and end with three double quotes all 
+    " alone on a line.  This is in accordance with the numpy documentation.
+
+    if line =~ doc_open_pattern
+        return '>' . fold_level
+    endif
+
+    if line =~ doc_close_pattern
+        return '<' . fold_level
+    endif
+
     " If none of the above criteria were met, keep the fold level the same as
     " it was on the previous line.  See `:help fold-expr' for the meaning of
     " the return strings.
@@ -87,7 +101,7 @@ function! PythonFoldText(foldstart, foldend)    " {{{1
     let line = getline(a:foldstart)
     let offset = 0
 
-    while line =~ '^\s*@'
+    while line =~ '^\s*@' || line =~ '^\s*"""'
         let offset += 1
         let line = getline(a:foldstart + offset)
     endwhile
