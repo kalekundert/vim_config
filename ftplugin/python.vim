@@ -24,13 +24,13 @@ set foldexpr=PythonFoldExpressionCaller()
 set foldtext=PythonFoldTextCaller()
 
 function! PythonFoldExpression(lnum)    " {{{1
-
     let line = getline(a:lnum)
     let indent = indent(a:lnum)
     let fold_level = indent / &shiftwidth + 1
 
     let blank_pattern = '^\s*$'
     let manual_pattern = '# .*(fold)'
+    let ignore_pattern = '# .*(no fold)'
     let fold_pattern = '^\s*\(class\s\|def\s\|@\|if __name__\s\)'
     let doc_open_pattern = '^\s*""" $'
     let doc_close_pattern = '^\s*"""$'
@@ -49,6 +49,12 @@ function! PythonFoldExpression(lnum)    " {{{1
 
     if line =~ manual_pattern
         return '>' . fold_level
+    endif
+
+    " Don't start new folds on lines that contain the string '(no fold').
+
+    if line =~ ignore_pattern
+        return '='
     endif
 
     " Each class and function starts a new fold, unless the previous line also
