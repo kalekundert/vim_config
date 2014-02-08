@@ -17,10 +17,10 @@ syntax region pythonString start="u\=r\='" skip="\\'" end="'" oneline
             \ contains=pythonEscape,pythonSpecialString,@NoSpell
 
 " Match triple-quoted strings with backslashes after the third quote.
-syntax region pythonString start="u\=r\='''\\" end="'''"
+syntax region pythonString start='u\=r\="""\\' end='"""'
             \ contains=pythonEscape,pythonSpecialString,@Spell
 
-syntax region pythonString start='u\=r\="""\\' end='"""'
+syntax region pythonString start="u\=r\='''\\" end="'''"
             \ contains=pythonEscape,pythonSpecialString,@NoSpell
 
 " Recognize some restructured text inside comments.
@@ -42,11 +42,11 @@ syntax match pythonMagicComment "^# encoding: utf-8$" contains=@NoSpell
 syntax match pythonMagicComment "^#!/usr/bin/env python[23]\?$"
             \ contains=@NoSpell
 
-" Highlight both the '@' sign and the function name for decorators.
+" Highlight the whole line for decorators.
 syntax clear pythonDecorator
-syntax match pythonDecorator " *@\h[a-zA-Z1-9_.]*"
+syntax match pythonDecorator "^\s*@.*$"
 
-" Don't hightlight the exception base class.
+" Don't highlight the exception base class.
 syntax keyword pythonExceptionBaseClass Exception
 
 " Change how some groups are colored
