@@ -10,7 +10,7 @@ set fileformat=unix
 set fileformats=unix
 set nospell
 set spelllang=en_us
-set printdevice=KortemmeLab
+set printdevice=KortemmePrinter
 set encoding=utf-8
 set listchars=tab:→\ ,trail:·
 
@@ -25,6 +25,7 @@ noremap Y y$
 noremap q ge
 noremap Q gE
 noremap K gq
+"noremap cx cc<Esc>
 noremap ` q
 noremap '' 'mzz
 noremap == 1z=

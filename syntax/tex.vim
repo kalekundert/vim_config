@@ -1,7 +1,7 @@
 " Spell-check everywhere that does not match a syntax group.
 syntax spell toplevel
 
-syntax match latexCommand '\\[a-z]*' contains=@NoSpell
+syntax match latexCommand '\\[a-z*]*' contains=@NoSpell
 syntax match latexPercent '\\%'
 syntax match latexComment '%.*$' contains=@Spell,@latexSpellExceptions
 

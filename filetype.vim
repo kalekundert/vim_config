@@ -5,6 +5,7 @@ endif
 augroup filetypedetect
     autocmd BufRead,BufNewFile CMakeLists.txt setfiletype cmake
     autocmd BufRead,BufNewFile *.sh           setfiletype zsh
+    autocmd BufRead,BufNewFile *.ihh          setfiletype cpp
     autocmd BufRead,BufNewFile *.pml          setfiletype pymol
     autocmd BufRead,BufNewFile *.txt          setfiletype text
     autocmd BufRead,BufNewFile *.rst          setfiletype rest
@@ -17,10 +18,10 @@ augroup filetypedetect
     autocmd BufRead,BufNewFile *.mutt         setfiletype muttrc
 
     autocmd BufRead,BufNewFile *.py,*.pyw,*.pym,Scons*
-            \ if getline(1) =~ 'python3' | 
-            \   setfiletype python3 |
-            \ else |
+            \ if getline(1) =~ 'python2' | 
             \   setfiletype python2 |
+            \ else |
+            \   setfiletype python3 |
             \ endif
 augroup end
 
