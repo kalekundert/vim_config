@@ -9,18 +9,18 @@ syntax match pythonSpecialString "%[^'" ]" contained
 syntax match pythonSpecialString "\\." contained
 
 " Include the quotes in the region matched by pythonString.
-syntax region pythonString start='u\=r\="' skip='\\"' end='"' oneline
+syntax region pythonString start='u\=r\=b\="' skip='\\"' end='"' oneline
             \ contains=pythonEscape,pythonSpecialString,@Spell
 
 " Only do spell checking in double-quoted strings.
-syntax region pythonString start="u\=r\='" skip="\\'" end="'" oneline
+syntax region pythonString start="u\=r\=b\='" skip="\\'" end="'" oneline
             \ contains=pythonEscape,pythonSpecialString,@NoSpell
 
 " Match triple-quoted strings with backslashes after the third quote.
-syntax region pythonString start='u\=r\="""\\' end='"""'
+syntax region pythonString start='u\=r\=b\="""\\' end='"""'
             \ contains=pythonEscape,pythonSpecialString,@Spell
 
-syntax region pythonString start="u\=r\='''\\" end="'''"
+syntax region pythonString start="u\=r\=b\='''\\" end="'''"
             \ contains=pythonEscape,pythonSpecialString,@NoSpell
 
 " Recognize some restructured text inside comments.
@@ -30,21 +30,24 @@ syntax region pythonVerbatim start="`" end="'" oneline
 " Match docstrings as comments, rather than strings.
 syntax match pythonComment " *#.*" 
             \ contains=pythonVerbatim,pythonAcronym,@Spell
-syntax region pythonComment start='"""{' end='}"""'
-            \ keepend contains=@NoSpell
-syntax region pythonComment start='""" ' end='"""$'
+syntax region pythonComment start='^ *"""' end='"""$'
             \ keepend contains=pythonVerbatim,pythonAcronym,@Spell
+syntax region pythonComment start="^ *'''" end="'''$"
+            \ keepend contains=pythonVerbatim,pythonAcronym,@NoSpell
 
 " Recognize the magic comments that I tend to put in files.
 syntax match pythonMagicComment "^# vim: .*$" contains=@NoSpell
 syntax match pythonMagicComment "^# encoding: latin-1$" contains=@NoSpell
 syntax match pythonMagicComment "^# encoding: utf-8$" contains=@NoSpell
-syntax match pythonMagicComment "^#!/usr/bin/env python[23]\?$"
+syntax match pythonMagicComment "^#!.*python[23]\?$"
             \ contains=@NoSpell
+
+" Highlight 'print' differently if it's a function.
+syntax match pythonPrintFunction "print("
 
 " Highlight the whole line for decorators.
 syntax clear pythonDecorator
-syntax match pythonDecorator "^\s*@.*$"
+syntax match pythonDecorator "^\s*@.*$" contains=pythonComment
 
 " Don't highlight the exception base class.
 syntax keyword pythonExceptionBaseClass Exception
@@ -57,6 +60,7 @@ highlight link pythonMagicComment SpecialComment
 highlight link pythonConstant Constant 
 highlight link pythonExceptions Normal
 highlight link pythonDecorator PreProc
+highlight link pythonPrintFunction Normal
 
 highlight link pythonEscape String
 highlight link pythonSpecialString String
