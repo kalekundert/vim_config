@@ -29,9 +29,9 @@ function! PythonFoldExpression(lnum)    " {{{1
     let fold_level = indent / &shiftwidth + 1
 
     let blank_pattern = '^\s*$'
-    let manual_pattern = '# .*(fold)'
+    let manual_pattern = '\(^\s*##\|# .*(fold)\)'
     let ignore_pattern = '# .*(no fold)'
-    let fold_pattern = '^\s*\(class\s\|def\s\|@\|if __name__\s\)'
+    let fold_pattern = '^\s*\(class\s\|def\s\|@\|if __name__\s==\)'
     let doc_open_pattern = '^\s*"""\\'
     let doc_close_pattern = '^\s*"""$'
 
