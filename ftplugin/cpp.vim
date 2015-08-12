@@ -15,20 +15,84 @@ set foldtext=CppFoldTextCaller()
 
 function! CppFoldExpression(lnum)  " {{{1
 
+    " The purpose of this function is to decide how the given line should be 
+    " folded.  There are three possible outcomes: open a new fold, close the 
+    " existing fold, or don't change anything.
+    "
+    " The code decides where to open new folds by looking for blocks of 
+    " 'top-level' (i.e. unindented) text.  If the block contains a particular 
+    " pattern ('{' for function definitions, '#include' or 'using' for header 
+    " blocks), the first line in that block set as the beginning of the fold.
+    "
+    " The code decides where close folds by looking for blank lines.  If the 
+    " line above that blank line is part of a top-level block, the current fold 
+    " is closed.  (This does lead to a few cases where we try to close a fold 
+    " that doesn't exist, but fortunately vim handles this gracefully.)
+    " 
+    " If neither of the above to conditions are met, the fold level is simply 
+    " maintained.
+
     let line = getline(a:lnum)
-    let marker_start_pattern = '{{{\d$'
-    let marker_end_pattern = '}}}\d$'
+    let previous_line = getline(a:lnum - 1)
+    let next_line = getline(a:lnum + 1)
 
-    " Respect manual fold markers.  The regular triple-bracket markers are 
-    " respected, although the fold number is always taken to be 1.
+    let blank_pattern = '^\s*$'
+    let top_level_pattern = '^\S'
+    let start_fold_pattern = '{\|^#include\|^using\|^\/\/'
+    let dont_fold_pattern = '^\(namespace\|class\|)\|{\|}\)'
 
-    if line =~ marker_start_pattern
-        return '>1'
+    " When a blank line is found, decide if it should be used to close a fold 
+    " by investigating the previous line.  If the previous line is part of a 
+    " top-level block, close the fold.
+
+    if line =~ blank_pattern
+        if previous_line =~ top_level_pattern
+            return '<1'
+        else
+            return '='
+        endif
     endif
 
-    if line =~ marker_end_pattern
-        return '<1'
+    " The rest of this function determines where new folds should be opened.  
+    " Since folds can only open on unindented lines, we can immediately ignore 
+    " any line that doesn't begin with whitespace.
+
+    if line !~ top_level_pattern
+        return '='
     endif
+
+    " Only the first line of a top-level block can open a fold, so don't change 
+    " the fold level if there is " another top-level line above this one.
+
+    if previous_line =~ top_level_pattern
+        return '='
+    endif
+
+    " There are a few kinds of lines that I don't want to start new blocks.  
+    " These are namespaces, classes, and a few kinds of punctuation that would 
+    " otherwise confuse the code.  If such a line if encountered, don't count 
+    " it as being top-level.
+
+    if line =~ dont_fold_pattern
+        return '='
+    endif
+
+    " If the function has gotten this far, then we know this is the first line 
+    " of a top-level block.  To decide if we want this block to be folded, we 
+    " search through it until either we find a line matching a pre-specified 
+    " fold pattern or the block ends (i.e. we encounter a blank line).
+
+    let next_line = line
+    let offset = 0
+
+    while next_line !~ blank_pattern
+        if next_line =~ start_fold_pattern
+            return '>1'
+        endif
+
+        let offset += 1
+        let next_line = getline(a:lnum + offset)
+    endwhile
 
     " If none of the above criteria were met, keep the fold level the same as
     " it was on the previous line.  See `:help fold-expr' for the meaning of
@@ -40,9 +104,9 @@ endfunction
 
 function! CppFoldText(foldstart, foldend)    " {{{1
 
-    " Search for a line that contains the namespace operator '::' within the first 
-    " few lines of the fold.  If such a line is found, use it to display the 
-    " fold.  Otherwise, use the first line.
+    " Search for a line that looks like a function in each fold.  If such a 
+    " line is found, use it to display the fold.  Otherwise, use the first 
+    " line.
 
     let line_counter = a:foldstart
     let lines_searched = 0
@@ -52,27 +116,28 @@ function! CppFoldText(foldstart, foldend)    " {{{1
         let line_counter += 1
         let lines_searched += 1
 
+        " Stop looking once a blank line is found.
+        if line =~ '^\s*$'
+            let line = getline(a:foldstart)
+            break
+        endif
+
         " Skip doxygen comments
         if line =~ '^\s*\/\/\/' || line =~ '@'
             continue
         endif
 
         " Skip blank start markers
-        if line =~ '^\s*\/\/ {{{'
+        if line =~ '^\s*\/\/ {{[{]'
             continue
         endif
 
-        " If a comment is found, use it to name the fold.
-        if line =~ '\/\/'
-            break
-        endif
-
         " If a function name is found, use it to name the fold.
-        if line =~ '\<\w\+\>::'
+        if line =~ '('
             break
         endif
 
-        " Give up after three lines.
+        " Give up once the end of the fold is reached.
         if line_counter > a:foldend
             let line = getline(a:foldstart)
             break
