@@ -1,3 +1,18 @@
+" Vim Extensions
+" ==============
+let g:pathogen_disabled = ['YouCompleteMe', 'jedi-vim']
+    
+call pathogen#infect()
+call pathogen#helptags()
+
+let g:easytags_dynamic_files = 1
+let g:jedi#popup_on_dot = 0
+"let g:jedi#completions_enabled = 0
+let g:SuperTabDefaultCompletionType = "context"
+
+map <C-n> :NERDTreeToggle<CR>
+nmap <C-s> :FSHere<CR>
+
 " General Options
 " ===============
 set nobackup
@@ -25,6 +40,8 @@ noremap Y y$
 noremap q ge
 noremap Q gE
 noremap K gq
+noremap j gj
+noremap k gk
 "noremap cx cc<Esc>
 noremap ` q
 noremap '' 'mzz
@@ -55,6 +72,11 @@ set formatoptions=t,croq,wn
 set shortmess+=I
 set textwidth=79
 set nowrap
+set linebreak
+set nonumber
+set breakindent
+set breakindentopt=sbr,shift:4
+set showbreak=→\ 
 
 set tabstop=4
 set softtabstop=4
@@ -66,7 +88,9 @@ set expandtab
 "let &formatlistpat='^# \d\+.\s'
 "let &formatlistpat='^\s*\d\+[\]:.)}\t ]\s*'
 "let &formatlistpat='^\s*[a-z1-9]\+[\]:.)}]\s*|^\s*[-*]\s*'
+"let &formatlistpat='^\s*\(\(\d\+[\]:.)}\t ]\|[-∙]\)\s*'
 
+let &formatlistpat='^\s*\([0-9]\+\|[a-z]\|[iv]\+\)[\].:)}]\s\+'
 map <leader>K v}k:s/ *$/ /<CR>$x<C-O>gq}
 
 autocmd FileType gitcommit set textwidth=72
@@ -111,7 +135,7 @@ set showcmd
 set ruler
 
 set foldmethod=marker
-set scrolloff=5
+"set scrolloff=5
 set lazyredraw
 
 if has('gui_running')
