@@ -38,15 +38,16 @@ function! CppFoldExpression(lnum)  " {{{1
 
     let blank_pattern = '^\s*$'
     let top_level_pattern = '^\S'
-    let start_fold_pattern = '{\|^#include\|^using\|^\/\/'
-    let dont_fold_pattern = '^\(namespace\|class\|)\|{\|}\)'
+    let open_fold_pattern = '{\|('
+    let dont_fold_pattern = '^\(namespace\|class\|static\|)\|{\|}\)'
+    let close_fold_pattern = '^}\|^\/\/'
 
     " When a blank line is found, decide if it should be used to close a fold 
     " by investigating the previous line.  If the previous line is part of a 
     " top-level block, close the fold.
 
     if line =~ blank_pattern
-        if previous_line =~ top_level_pattern
+        if previous_line =~ close_fold_pattern
             return '<1'
         else
             return '='
@@ -86,7 +87,7 @@ function! CppFoldExpression(lnum)  " {{{1
     let offset = 0
 
     while next_line !~ blank_pattern
-        if next_line =~ start_fold_pattern
+        if next_line =~ open_fold_pattern
             return '>1'
         endif
 
