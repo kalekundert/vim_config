@@ -32,6 +32,8 @@ function! PythonFoldExpression(lnum)    " {{{1
     let manual_pattern = '\(^\s*##\|# .*(fold)\)'
     let ignore_pattern = '# .*(no fold)'
     let fold_pattern = '^\s*\(class\s\|def\s\|@\|if __name__\s==\)'
+    let import_pattern = '^\(import\|from\)'
+    let data_struct_pattern = '^\w\+ = \({\|[\|(\|"""\\\)$'
     let doc_open_pattern = '^\s*"""\\'
     let doc_close_pattern = '^\s*"""$'
 
@@ -51,7 +53,7 @@ function! PythonFoldExpression(lnum)    " {{{1
         return '>' . fold_level
     endif
 
-    " Don't start new folds on lines that contain the string '(no fold').
+    " Don't start new folds on lines that contain the string '(no fold)'.
 
     if line =~ ignore_pattern
         return '='
@@ -71,13 +73,22 @@ function! PythonFoldExpression(lnum)    " {{{1
         endif
     endif
 
-    " Consecutive blank lines decrease the fold level by 1.  This makes it
-    " possible to separate the folds into groups.
-    
-    let next_line = getline(a:lnum + 1)
+    " Start a new fold for each top-level import statement, unless the previous 
+    " line is also an import statement.
 
-    if (line =~ blank_pattern) && (next_line =~ blank_pattern)
-        return 's1'
+    "if line =~ import_pattern
+    "    if previous_line =~ import_pattern
+    "        return '='
+    "    else
+    "        return '>1'
+    "    endif
+    "endif
+
+    " Fold global literal data structures (e.g. dictionaries, lists, and sets) 
+    " spread out over more than one line.
+
+    if line =~ data_struct_pattern
+        return '>' . fold_level
     endif
 
     " Recognize docstrings that begin and end with three double quotes all 
@@ -89,6 +100,15 @@ function! PythonFoldExpression(lnum)    " {{{1
 
     if line =~ doc_close_pattern
         return '<' . fold_level
+    endif
+
+    " Consecutive blank lines decrease the fold level by 1.  This makes it
+    " possible to separate the folds into groups.
+    
+    let next_line = getline(a:lnum + 1)
+
+    if (line =~ blank_pattern) && (next_line =~ blank_pattern)
+        return 's1'
     endif
 
     " If none of the above criteria were met, keep the fold level the same as
@@ -157,7 +177,7 @@ function! PythonFoldText(foldstart, foldend)    " {{{1
     let cutoff = &columns - strlen(status)
     let title = substitute(title, '^\(.\{-}\)\s*$', '\1', '')
     
-    if strlen(title) > cutoff
+    if strlen(title) >= cutoff
         let title = title[0:cutoff - 4] . '...'
         let padding = ''
     else
