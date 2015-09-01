@@ -13,7 +13,7 @@ syntax region textVerbatim start="`" end="'" oneline contains=@NoSpell
 syntax region textURL start="<" end=">" oneline contains=@NoSpell
 
 " Try to avoid spell-checking acronyms.
-syntax match textAcronym "[A-Z0-9]\{2,}" contains=@NoSpell
+syntax match textAcronym "\<[A-Z0-9]\{2,}\>" contains=@NoSpell
 
 " Try to avoid spell-checking file paths.
 syntax match textFilePath "\S*\.\(txt\|py\|sh\)" contains=@NoSpell

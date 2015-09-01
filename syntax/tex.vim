@@ -23,6 +23,9 @@ syn region latexHyperlink start="`" end="'"
             \ contains=@NoSpell contained transparent excludenl
 syn cluster latexSpellExceptions add=latexHyperlink
 
+" Try to avoid spell-checking acronyms.
+syntax match latexAcronym "\<[A-Z0-9]\{2,}\>" contains=@NoSpell
+
 " Linking the HTML groups to standard syntax groups.
 highlight def link latexCommand Function
 highlight def link latexArgument Function
