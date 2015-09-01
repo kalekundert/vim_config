@@ -87,7 +87,7 @@ function! RestFoldText()
     let text = substitute(text, '  .*$', '', '')
 
     let lines = 1 + v:foldend - v:foldstart
-    let lines = ' (' . lines . ') '
+    let lines = ' (' . lines . ')'
 
     let cutoff = &columns - strlen(lines)
     
@@ -97,7 +97,7 @@ function! RestFoldText()
         let padding = ''
     else
         let padding = cutoff - strlen(text) - 1
-        let padding = ' ' . repeat('-', padding)
+        let padding = ' ' . repeat('┄', padding)
     endif
 
     return text . padding . lines
