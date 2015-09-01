@@ -39,8 +39,8 @@ syntax region pythonComment start="^ *'''" end="'''$"
 syntax match pythonMagicComment "^# vim: .*$" contains=@NoSpell
 syntax match pythonMagicComment "^# encoding: latin-1$" contains=@NoSpell
 syntax match pythonMagicComment "^# encoding: utf-8$" contains=@NoSpell
-syntax match pythonMagicComment "^#!.*python[23]\?$"
-            \ contains=@NoSpell
+syntax match pythonMagicComment "^#!.*python[23]\?$" contains=@NoSpell
+syntax match pythonMagicComment "# pragma: no cover"
 
 " Highlight 'print' differently if it's a function.
 syntax match pythonPrintFunction "print("
@@ -51,6 +51,16 @@ syntax match pythonDecorator "^\s*@.*$" contains=pythonComment
 
 " Don't highlight the exception base class.
 syntax keyword pythonExceptionBaseClass Exception
+
+" Unless this is explicitly labeled as a python2 script, don't highlight print 
+" or exec, as they are no longer keywords.
+if getline(1) !~ "python2"
+    syntax keyword pythonPrint print
+    highlight link pythonPrint Normal
+
+    syntax keyword pythonExec exec
+    highlight link pythonExec Normal
+endif
 
 " Change how some groups are colored
 highlight link pythonInclude Statement
