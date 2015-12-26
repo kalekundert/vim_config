@@ -90,7 +90,7 @@ set expandtab
 "let &formatlistpat='^\s*[a-z1-9]\+[\]:.)}]\s*|^\s*[-*]\s*'
 "let &formatlistpat='^\s*\(\(\d\+[\]:.)}\t ]\|[-∙]\)\s*'
 
-let &formatlistpat='^\s*\([0-9]\+\|[a-z]\|[iv]\+\)[\].:)}]\s\+'
+let &formatlistpat='^\s*\([0-9]\+\|[a-z]\|[iv]\+\)[\].:)}]\s\+\|^\s*[-*]#\?\s\+\|^\.\.\s'
 map <leader>K v}k:s/ *$/ /<CR>$x<C-O>gq}
 
 autocmd FileType gitcommit set textwidth=72
