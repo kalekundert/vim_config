@@ -36,10 +36,11 @@ syntax region pythonComment start="^ *'''" end="'''$"
             \ keepend contains=pythonVerbatim,pythonAcronym,@NoSpell
 
 " Recognize the magic comments that I tend to put in files.
-syntax match pythonMagicComment "^# vim: .*$" contains=@NoSpell
+syntax match pythonMagicComment "^#!.*python[23]\?$" contains=@NoSpell
 syntax match pythonMagicComment "^# encoding: latin-1$" contains=@NoSpell
 syntax match pythonMagicComment "^# encoding: utf-8$" contains=@NoSpell
-syntax match pythonMagicComment "^#!.*python[23]\?$" contains=@NoSpell
+syntax match pythonMagicComment "^# vim: .*$" contains=@NoSpell
+syntax match pythonMagicComment "^# pylint: .*$"
 syntax match pythonMagicComment "# pragma: no cover"
 
 " Highlight 'print' differently if it's a function.
