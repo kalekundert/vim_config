@@ -4,6 +4,11 @@ set spell
 " Turn on automatic formatting.
 set formatoptions+=a
 
+" Set the indent to line up nicely with the directives.
+set tabstop=3
+set softtabstop=3
+set shiftwidth=3
+
 " Use the structure of the code to create folds. 
 set foldmethod=expr
 set foldexpr=RestFoldExpression()
