@@ -2,6 +2,10 @@
 syn keyword cppThis	this
 highlight link cppThis Normal
 
+" Allow braces within brackets (they can be initializer lists).
+syn clear cErrInBracket 
+syn match cErrInBracket display contained "[);]\|<%\|%>"
+
 " Highlight 'string' as if it were a built-in type.
 syn match notType "std::string"
 syn keyword cType string
@@ -9,6 +13,9 @@ syn keyword cType string
 " Highlight for-each constructs like any other control flow keyword.
 syn keyword cppForEach foreach BOOST_FOREACH
 highlight link cppForEach cRepeat
+
+" Highlight % as it's used for boost::format.
+syn match cFormat display "%\d\+%" contained
 
 " Don't spell-check email addresses in comments.
 syn match cppEmailAddress "([a-zA-Z0-9.]\+.[a-zA-Z0-9.]\+)" 
