@@ -12,10 +12,9 @@ augroup filetypedetect
     autocmd BufRead,BufNewFile *.mdp          setfiletype mdp
     autocmd BufRead,BufNewFile *.mutt         setfiletype muttrc
     autocmd BufRead,BufNewFile *.pml          setfiletype pymol
-    autocmd BufRead,BufNewFile *.rst          setfiletype rest
     autocmd BufRead,BufNewFile *.sh           setfiletype zsh
     autocmd BufRead,BufNewFile *.tex          setfiletype tex
-    autocmd BufRead,BufNewFile *.txt          setfiletype text
+    autocmd BufRead,BufNewFile *.txt          setfiletype rst
     autocmd BufRead,BufNewFile *.xml          setfiletype sgml
 augroup end
 
