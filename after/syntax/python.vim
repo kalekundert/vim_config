@@ -35,9 +35,9 @@ syntax match pythonFoldHint "[:[{(] \zs#$"
 syntax match pythonFoldHint "^@.*\zs#$"
 syntax match pythonComment "#.\+$"
             \ contains=pythonVerbatim,pythonAcronym,@Spell
-syntax region pythonComment start='^ *"""' end='"""$'
+syntax region pythonComment start='^ *r\="""' end='"""$'
             \ keepend contains=pythonVerbatim,pythonAcronym,@Spell
-syntax region pythonComment start="^ *'''" end="'''$"
+syntax region pythonComment start="^ *r\='''" end="'''$"
             \ keepend contains=pythonVerbatim,pythonAcronym,@NoSpell
 
 " Recognize the magic comments that I tend to put in files.
