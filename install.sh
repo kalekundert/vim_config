@@ -15,4 +15,4 @@ if [ ! $INSTALL_PATH -ef ~/.vim ]; then
     ln -nsf $INSTALL_PATH ~/.vim
 fi
 
-ln -nsf $INSTALL_PATH/setup.vim ~/.vimrc
+ln -nsf $INSTALL_PATH/init.vim ~/.vimrc
