@@ -1,0 +1,1 @@
+/home/kale/.config/nvim/after/plugin/map.vim
