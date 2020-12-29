@@ -21,8 +21,8 @@ function! CppFoldExpression(lnum)  " {{{1
     "
     " The code decides where to open new folds by looking for blocks of 
     " 'top-level' (i.e. unindented) text.  If the block contains a particular 
-    " pattern ('{' for function definitions, '#include' or 'using' for header 
-    " blocks), the first line in that block set as the beginning of the fold.
+    " pattern --- e.g. '{' for function definitions --- the first line in that 
+    " block set as the beginning of the fold.
     "
     " The code decides where close folds by looking for blank lines.  If the 
     " line above that blank line is part of a top-level block, the current fold 
@@ -35,12 +35,26 @@ function! CppFoldExpression(lnum)  " {{{1
     let line = getline(a:lnum)
     let previous_line = getline(a:lnum - 1)
     let next_line = getline(a:lnum + 1)
+    let next_next_line = getline(a:lnum + 2)
 
     let blank_pattern = '^\s*$'
     let top_level_pattern = '^\S'
     let open_fold_pattern = '{\|('
-    let dont_fold_pattern = '^\(namespace\|class\|static\|)\|{\|}\)'
-    let close_fold_pattern = '^}\|^\/\/'
+    let dont_fold_pattern = '^\(namespace\|static\|#\|)\|{\|}\|.*:$\)'
+    let skip_line_pattern = '^\/\/'
+    let close_fold_pattern = '^}'
+    let close_header_pattern = '^namespace'
+
+    " Attempt to make a fold for all the headers by always opening a fold on 
+    " the first line, and closing a fold two lines before seeing 'namespace'.
+
+    if a:lnum == 1
+        return '>1'
+    endif 
+
+    if next_next_line =~ close_header_pattern
+        return '<1'
+    endif
 
     " When a blank line is found, decide if it should be used to close a fold 
     " by investigating the previous line.  If the previous line is part of a 
@@ -63,7 +77,7 @@ function! CppFoldExpression(lnum)  " {{{1
     endif
 
     " Only the first line of a top-level block can open a fold, so don't change 
-    " the fold level if there is " another top-level line above this one.
+    " the fold level if there is another top-level line above this one.
 
     if previous_line =~ top_level_pattern
         return '='
@@ -81,14 +95,17 @@ function! CppFoldExpression(lnum)  " {{{1
     " If the function has gotten this far, then we know this is the first line 
     " of a top-level block.  To decide if we want this block to be folded, we 
     " search through it until either we find a line matching a pre-specified 
-    " fold pattern or the block ends (i.e. we encounter a blank line).
+    " fold pattern or the block ends (i.e. we encounter a blank line).  Some 
+    " lines (i.e. comments) are not searched for the fold pattern.
 
     let next_line = line
     let offset = 0
 
     while next_line !~ blank_pattern
-        if next_line =~ open_fold_pattern
-            return '>1'
+        if next_line !~ skip_line_pattern
+            if next_line =~ open_fold_pattern
+                return '>1'
+            endif
         endif
 
         let offset += 1
@@ -123,8 +140,8 @@ function! CppFoldText(foldstart, foldend)    " {{{1
             break
         endif
 
-        " Skip doxygen comments
-        if line =~ '^\s*\/\/\/' || line =~ '@'
+        " Skip comments
+        if line =~ '^\s*\/\/' || line =~ '@'
             continue
         endif
 
@@ -135,6 +152,11 @@ function! CppFoldText(foldstart, foldend)    " {{{1
 
         " If a function name is found, use it to name the fold.
         if line =~ '('
+            break
+        endif
+
+        " If a class definition is found, use it to name the fold.
+        if line =~ '^\<\(class\|struct\)\>'
             break
         endif
 
@@ -160,10 +182,17 @@ function! CppFoldText(foldstart, foldend)    " {{{1
 
     let flags = add(flags, 1 + a:foldend - a:foldstart)
     let status = ' (' . join(flags, ') (') . ')'
-
     let cutoff = &columns - strlen(status)
+
     let title = substitute(title, '\t', '  ', 'g')
     let title = substitute(title, '^\(.\{-}\)\s*\(/*\s*{{{\d\)\=\s*$', '\1', '') " }}}
+    
+    " Remove the return value, if there is one, from the title to make all the 
+    " method names line up.
+    let words = split(title)
+    if words[0] !~ '('
+        let title = join(words[1:], ' ')
+    endif
     
     if strlen(title) >= cutoff
         let title = title[0:cutoff - 4] . '...'
