@@ -30,9 +30,9 @@ syntax region pythonVerbatim start="`" end="'" oneline
 " Match docstrings as comments, rather than strings.
 syntax match pythonComment " *#.*" 
             \ contains=pythonVerbatim,pythonAcronym,@Spell
-syntax region pythonComment start='^ *"""' end='"""$'
+syntax region pythonComment start='^ *r\="""' end='"""$'
             \ keepend contains=pythonVerbatim,pythonAcronym,@Spell
-syntax region pythonComment start="^ *'''" end="'''$"
+syntax region pythonComment start="^ *r\='''" end="'''$"
             \ keepend contains=pythonVerbatim,pythonAcronym,@NoSpell
 
 " Recognize the magic comments that I tend to put in files.
